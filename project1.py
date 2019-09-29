@@ -41,29 +41,36 @@ def pick():
 
 
 def guess(guessed_letter, secret_word, placeholder):
-    updated_placeholder = ""
+    #updated_placeholder = ""
+
+    #print("Placeholder input to guess: ")
+    # no spaces on this placeholder
+    #print(placeholder)
     list_placeholder = list(placeholder)
-    print(list_placeholder)
+
 
     for index, letter in enumerate(secret_word):
-        if(guessed_letter == letter):
-            updated_placeholder = placeholder + guessed_letter
-        else:
-            updated_placeholder = updated_placeholder + placeholder
-        print(letter + " ", end = "")
-    print("\n")
+        if guessed_letter == letter:
+            list_placeholder[index] = letter
+
+    print(list_placeholder)
+
+    # add spaces to new placeholder
+    updated_placeholder = "".join(list_placeholder)
+    #print(updated_placeholder)
 
     return updated_placeholder
 
+
 def play(secret_word):
     placeholder = ""
+    updated_placeholder = ""
 
     for i in range(0, len(secret_word)):
         placeholder = placeholder + "_"
 
-    print(" ".join(placeholder))
-
-    guess("A", secret_word,placeholder)
+    # placeholder W/O spaces
+    #print(placeholder)
 
     #for val in placeholder:
     #    print(val + " ", end = '')
@@ -71,14 +78,33 @@ def play(secret_word):
 
     # loop repeats 10 times
     for i in range(1,11):
-        print("Enter a letter for guess #%i:" % i)
+        print("starting loop")
+        if placeholder == secret_word:
+            print("The word was: %s" % secret_word)
+            return True
+        print(" ".join(placeholder))
+        guessed_letter = input("Enter a letter for guess #%i: " % i)
+        if len(guessed_letter) == 1:
+            updated_placeholder = guess(guessed_letter, secret_word, placeholder)
+        else:
+            print("Single characters only")
+        placeholder = updated_placeholder
+        #print(updated_placeholder)
+
+    print("The word was: %s" % secret_word)
+    return False
 
 
 def main():
     welcome()
     randomly_selected_word = pick()
+    print("Randomly selected word is: %s" % randomly_selected_word)
     #guess("A", randomly_selected_word,"_")
-    play(randomly_selected_word)
+    win_or_lose = play(randomly_selected_word)
+    if win_or_lose:
+        print("You guessed the word - congrats!")
+    else:
+        print("Sorry - better luck next time.")
 
 if __name__ == "__main__":
     main()
